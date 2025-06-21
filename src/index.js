@@ -55,3 +55,14 @@ app.put("/mobil/:id", async (c) => {
     return c.text("Gagal mengupdate mobil: " + err.message, 500);
   }
 });
+
+// Hapus mobil
+app.delete("/mobil/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    await c.env.DB.prepare("DELETE FROM mobil WHERE id = ?").bind(id).run();
+    return c.json({ message: "Mobil dihapus" });
+  } catch (err) {
+    return c.text("Gagal menghapus mobil: " + err.message, 500);
+  }
+});
