@@ -12,3 +12,13 @@ app.use(
     allowHeaders: ["Content-Type"],
   })
 );
+
+// Test endpoint
+app.get("/mobil", async (c) => {
+  try {
+    const { results } = await c.env.DB.prepare("SELECT * FROM mobil").all();
+    return c.json(results);
+  } catch (err) {
+    return c.text("Gagal mengambil data mobil: " + err.message, 500);
+  }
+});
