@@ -38,3 +38,20 @@ app.post("/mobil", async (c) => {
     return c.text("Gagal menambahkan mobil: " + err.message, 500);
   }
 });
+
+// Update mobil
+app.put("/mobil/:id", async (c) => {
+  try {
+    const id = c.req.param("id");
+    const { nama, harga, tersedia } = await c.req.json();
+    await c.env.DB.prepare(
+      "UPDATE mobil SET nama = ?, harga = ?, tersedia = ? WHERE id = ?"
+    )
+      .bind(nama, harga, tersedia, id)
+      .run();
+
+    return c.json({ message: "Mobil diupdate" });
+  } catch (err) {
+    return c.text("Gagal mengupdate mobil: " + err.message, 500);
+  }
+});
